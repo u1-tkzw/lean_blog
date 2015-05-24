@@ -20,6 +20,9 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
+Route::controller('blog', 'BlogController');
+/*
 Route::get('blog', 'BlogController@index');
+Route::get('blog/entry', 'BlogController@entryForm');
 Route::post('blog_post', 'BlogController@addPost');
-
+ */
