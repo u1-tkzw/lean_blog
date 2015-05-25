@@ -10,17 +10,15 @@ class CreatePostsTable extends Migration {
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-            Schema::create('posts', function(Blueprint $table)
-            {
-		$table->increments('id');
-                $table->integer('user_id')->unsigned();
-		$table->string('title');
-		$table->string('body');
-                $table->timestamp('date');
-		$table->timestamps();
-            });
+	public function up() {
+		Schema::create('posts', function(Blueprint $table) {
+			$table->increments('id');
+			$table->integer('user_id')->unsigned();
+			$table->string('title');
+			$table->string('body');
+			$table->timestamp('date');
+			$table->timestamps();
+		});
 	}
 
 	/**
@@ -28,9 +26,8 @@ class CreatePostsTable extends Migration {
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-            Schema::drop('posts');
+	public function down() {
+		Schema::drop('posts');
 	}
 
 }

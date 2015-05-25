@@ -21,21 +21,31 @@ class BlogController extends Controller {
     }
 
     /**
-     * アプリケーションのダッシュボードをユーザーへ表示
+     * 投稿記事一覧(index)画面を表示
      *
-     * @return Response
+     * @return view
      */
     public function getIndex()
     {
         return view('blog/index');
     }
     
-    
+    /**
+	 * 記事投稿画面を表示
+	 * 
+	 * @return view
+	 */
     public function getEntry()
     {
         return view('blog/entry');
     }
     
+	/**
+	 * 投稿記事一覧(Posts)取得用の API
+	 * クエリパラメータで取得件数を指定でき、指定件数分の投稿記事を返す。
+	 * 
+	 * @return JSON
+	 */
     public function getPosts()
     {
         // クエリパラメータ取得
@@ -59,6 +69,10 @@ class BlogController extends Controller {
         return Response::json($res);
     }
     
+	/**
+	 * 記事投稿用の API
+	 * @return 
+	 */
     public function postPost(){
         
         $input = Input::only('title','body','date');
