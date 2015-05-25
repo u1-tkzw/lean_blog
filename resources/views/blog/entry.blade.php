@@ -13,15 +13,22 @@
                         <!-- トークン -->
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         
+						<!-- ユーザID -->
+						<input type='hidden' name="user_id" class="form-control" value="{{ Auth::user()->id }}">
+						
+						<!-- タイトル -->
                         <div class="form-group">
                             <label for="title">タイトル</label>
                             <input type="text" name="title" class="form-control" value="{{ old('title') }}" placeholder="記事のタイトルを入力">
                         </div>
                         
+						<!-- 本文 -->
                         <div class="form-group">
                             <label for="body">本文</label>
                             <textarea name="body" class="form-control" rows="15" value="{{ old('body') }}" placeholder="本文を入力"></textarea>
                         </div>
+						
+						<!-- 投稿日時 -->
                         <div class="form-group">
                             <label for="body">投稿日時(省略可能)</label>
                             <div class='input-group date' id="datetimepicker">
@@ -31,10 +38,8 @@
                                 </span>
                             </div>
                         </div>
-                        
 
                         <button type="submit" class="btn btn-default">投稿</button>
-                    
                     </form>
                 </div>
             </div>

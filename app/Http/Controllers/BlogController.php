@@ -75,8 +75,8 @@ class BlogController extends Controller {
 	 */
     public function postPost(){
         
-        $input = Input::only('title','body','date');
-        
+        $input = Input::only('user_id', 'title', 'body', 'date');
+
         // 投稿日時が　null なら現在日時をセット
         if ($input['date'] === ""){
             $input['date'] = date('Y-m-d H:i:s');
@@ -88,14 +88,22 @@ class BlogController extends Controller {
             'body' => 'required',
             'date' => 'date_format:Y-m-d H\\:i\\:s',
         ]);
-        
+		
+        // バリデーションで問題ありならエラーを返す
         if ($validate->fails()){
             dd($validate->errors());
             //return redirect()->back()->withErrors($validate->errors());
         }
         
-        dd($input);
-        
+		// 記事を DB に追加
+		$post = Post::create([
+			'user_id' => $input['user_id'],
+			'title' => $input['title'],
+			'body' => $input['body'],
+			'date' => $input['date'],
+		]);
+		$post->save();
+
         return ;
     }
 }

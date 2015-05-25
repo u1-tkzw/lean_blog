@@ -9,6 +9,6 @@ class Post extends Model {
      *
      * @var array
      */
-    protected $fillable = ['title', 'body', 'date'];
+    protected $fillable = ['user_id', 'title', 'body', 'date'];
 
 }
