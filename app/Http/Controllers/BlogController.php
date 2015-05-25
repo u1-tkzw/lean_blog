@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Response;
 use Request;
+use Redirect;
+use Session;
 use Input;
 use Validator;
 use App\Post;
@@ -91,8 +93,7 @@ class BlogController extends Controller {
 		
         // バリデーションで問題ありならエラーを返す
         if ($validate->fails()){
-            dd($validate->errors());
-            //return redirect()->back()->withErrors($validate->errors());
+			return Redirect::back()->withErrors($validate->errors());
         }
         
 		// 記事を DB に追加
@@ -103,7 +104,8 @@ class BlogController extends Controller {
 			'date' => $input['date'],
 		]);
 		$post->save();
-
-        return ;
+		
+		Session::flash('info', "記事を投稿しました。");
+        return view('blog.index');
     }
 }
