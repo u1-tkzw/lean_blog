@@ -19,7 +19,8 @@ class BlogController extends Controller {
      */
     public function __construct()
     {
-        $this->middleware('auth');
+		// オプションで auth 対象を指定
+		$this->middleware('auth', ['only' => ['getEntry', 'postPost']]);
     }
 
     /**
@@ -65,15 +66,16 @@ class BlogController extends Controller {
                 $res = Post::all();
                 break;
             default :
-                $res = Post::all()->take($query['count']);
+                $res = Post::all()->sortByDesc('date')->take($query['count']);
         }
         
         return Response::json($res);
     }
     
 	/**
-	 * 記事投稿用の API
-	 * @return 
+	 * 記事投稿画面から渡された値を元に記事追加
+	 * 
+	 * @return view
 	 */
     public function postPost(){
         
