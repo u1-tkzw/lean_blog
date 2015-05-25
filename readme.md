@@ -1,9 +1,18 @@
-## Laravel Study Pack
+## ブログアプリ
+### 機能
+- 投稿済み記事一覧表示: 実装済み(仮)
+- 新規記事投稿: 実装済み
+- 記事編集: 未実装
+- コメント投稿: 未実装
 
-Laravel 学習用リポジトリ。各々 `fork` して使ってください。
+- UI の日本語化: 済
+- エラーメッセージの日本語化: 済
 
-## 導入済みパッケージ
-
-- [Laravel 日本語化パッケージ](https://github.com/laravel-ja/comja5)
-- [Laravel IDE Helper](https://github.com/barryvdh/laravel-ide-helper)
-  - `clone` して `composer install` した後に `php artisan ide-helper:generate` すること
+### ToDo (優先度順)
+- 非ログイン状態でも投稿済み一覧を見れるようにする。
+- 1記事毎のページを開くようにする
+- 1記事毎のページにコメント入力フォームを追加する
+- ログイン後のホームには自分の投稿済み記事一覧を表示する
+- getPosts() にソート用のクエリ追加。optional: orderby=desc|asc
+- getPosts() にバリデーション実装
+- 記事一覧ページで表示順を指定できるようにする(ドロップダウンで"投稿日時昇順,降順")
