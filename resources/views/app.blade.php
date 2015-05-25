@@ -54,7 +54,11 @@
             </div>
         </div>
     </nav>
-
+	
+	<!-- 情報表示 -->
+	@include('infobar')
+	
+	<!-- コンテンツ表示 -->
     @yield('content')
 
     <!-- Scripts -->
