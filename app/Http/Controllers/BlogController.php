@@ -81,7 +81,7 @@ class BlogController extends Controller {
         
         $input = Input::only('user_id', 'title', 'body', 'date');
 
-        // 投稿日時が　null なら現在日時をセット
+        // 投稿日時が空なら現在日時をセット
         if ($input['date'] === ""){
             $input['date'] = date('Y-m-d H:i:s');
         }
@@ -95,7 +95,8 @@ class BlogController extends Controller {
 		
         // バリデーションで問題ありならエラーを返す
         if ($validate->fails()){
-			return Redirect::back()->withErrors($validate->errors());
+			return Redirect::back()->withInput($input)
+				                   ->withErrors($validate->errors());
         }
         
 		// 記事を DB に追加
