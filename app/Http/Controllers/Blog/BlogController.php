@@ -1,14 +1,16 @@
 <?php 
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Blog;
 
+use App\Http\Controllers\Controller;
+use App\Post;
+use App\Comment;
 use Response;
 use Request;
 use Redirect;
 use Session;
 use Input;
 use Validator;
-use App\Post;
 
 class BlogController extends Controller {
 
@@ -20,7 +22,7 @@ class BlogController extends Controller {
     public function __construct()
     {
 		// オプションで auth 対象を指定
-		$this->middleware('auth', ['only' => ['getEntry', 'postPost']]);
+		$this->middleware('auth', ['only' => ['getEntry']]);
     }
 
     /**
@@ -32,7 +34,7 @@ class BlogController extends Controller {
     {
         return view('blog/index');
     }
-    
+
     /**
 	 * 記事投稿画面を表示
 	 * 
@@ -42,36 +44,7 @@ class BlogController extends Controller {
     {
         return view('blog/entry');
     }
-    
-	/**
-	 * 投稿記事一覧(Posts)取得用の API
-	 * クエリパラメータで取得件数を指定でき、指定件数分の投稿記事を返す。
-	 * 
-	 * @return JSON
-	 */
-    public function getPosts()
-    {
-        // クエリパラメータ取得
-        $query = Request::query();
-        
-        // クエリが空白なら全件検索
-        if (empty($query)){
-            $query['count'] = 'all';
-        }
-        
-        // ★ここでクエリのバリデーションが必要？
-        
-        switch ($query['count']){
-            case 'all':
-                $res = Post::all();
-                break;
-            default :
-                $res = Post::all()->sortByDesc('date')->take($query['count']);
-        }
-        
-        return Response::json($res);
-    }
-    
+	
 	/**
 	 * 記事投稿画面から渡された値を元に記事追加
 	 * 

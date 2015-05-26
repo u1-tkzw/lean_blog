@@ -18,6 +18,6 @@ Route::get('home', 'HomeController@index');
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
+	'blog' => 'Blog\BlogController',
+	'api/blog' => 'Blog\BlogApiController',
 ]);
-
-Route::controller('blog', 'BlogController');

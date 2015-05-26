@@ -5,7 +5,7 @@
     
     // 投稿済みの記事一覧(暫定で5件)を取得
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/blog/posts?count=5", false);  // 同期処理(false)
+    xhr.open("GET", "/api/blog/posts?count=5", false);  // 同期処理(false)
     xhr.onreadystatechange = function(){
         // request complete
         if (xhr.readyState === 4){
