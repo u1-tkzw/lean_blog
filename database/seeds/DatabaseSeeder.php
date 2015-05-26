@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\Post;
+use App\Comment;
 
 class DatabaseSeeder extends Seeder {
 
@@ -17,8 +18,9 @@ class DatabaseSeeder extends Seeder {
         Model::unguard();
 
         $this->call('UserTableSeeder');
+		$this->call('PasswordResetsTableSeeder');
         $this->call('PostTableSeeder');
-        $this->call('PasswordResetsTableSeeder');
+        $this->call('CommentTableSeeder');
     }
 
 }
@@ -65,6 +67,32 @@ class PostTableSeeder extends Seeder {
             'title' => 'サンプル記事02',
             'body' => 'これはサンプル記事です。',
             'date' => '2015-12-01 12:00:00',
+        ]);
+    }
+}
+
+class CommentTableSeeder extends Seeder {
+    
+    public function run() {
+        DB::table('comments')->truncate();
+		
+		Comment::create([
+            'post_id' => 1,
+			'name'    => 'テスト太郎',
+            'body'    => 'これはサンプルコメントです。',
+            'date'    => '2015-01-01 12:10:00',
+        ]);
+		Comment::create([
+            'post_id' => 1,
+			'name'    => 'テスト次郎',
+            'body'    => 'これはサンプルコメント2です。',
+            'date'    => '2015-01-2 12:30:00',
+        ]);
+		Comment::create([
+            'post_id' => 2,
+			'name'    => 'テスト花子',
+            'body'    => 'これはサンプルコメント3です。',
+            'date'    => '2015-01-03 12:30:00',
         ]);
     }
 }
