@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
+use App;
 use App\Post;
 use App\Comment;
 use Response;
@@ -73,9 +74,9 @@ class BlogApiController extends Controller {
 		
 		// 返却値生成
 		$res = [];
-		$res[] = ['post' => $post];
-		$res[] = ['comments' => $comments];
-				
-		return Response::json($res);
+		$res['post'] = $post;
+		$res['comments'] = $comments;
+		
+		return Response::json($res, 200, array(), JSON_PRETTY_PRINT);
     }
 }

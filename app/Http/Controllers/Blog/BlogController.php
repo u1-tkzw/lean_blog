@@ -35,7 +35,19 @@ class BlogController extends Controller {
         return view('blog/index');
     }
 
-    /**
+	/** 記事の画面を表示
+	 * 
+	 * @return view
+	 */
+	public function getPost($parameter)
+	{
+		// ★バリデーション
+		
+		$post_id = $parameter;
+		return view('blog/post', compact('post_id'));
+	}
+
+	/**
 	 * 記事投稿画面を表示
 	 * 
 	 * @return view

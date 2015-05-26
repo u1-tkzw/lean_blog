@@ -33,16 +33,17 @@
 
                 <div class="panel-body">
                     <script type="text/javascript">
-                        //for (var i = 0; i < res.length; i++){
                         for (var i in res){
+							posturl = "blog/post/" + i;
+							document.write(posturl);
                             document.write("<hr>");
+							document.write("<a href=\"" + posturl + "\">");
                             document.write("<h3>" + res[i].title + "</h3>");
+							document.write("</a>");
                             document.write("<p class=\"text-right\">" + res[i].date + "</p>");
                             document.write("<hr>");
-                            //document.write("<hr style=\"margin-top: 0px;\">");
                             document.write("<div>" + res[i].body + "</div>");
                             document.write("<p><a href=\"#top\">ページトップへ戻る</a></p>");
-                            //document.write("<hr>");
                         }
                     </script>
                 </div>
