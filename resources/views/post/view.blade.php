@@ -79,15 +79,17 @@
                             <hr>
                             <!-- トークン -->
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <!-- ポストID -->
+                            <input type='hidden' name="post_id" class="form-control" value="{{ $post_id }}">
                             <!-- コメント文 -->
                             <div class="form-group">
                                 <label for="body">コメント</label>
-                                <textarea name="body" class="form-control" rows="3" value="{{ old('body') }}" placeholder="コメントを入力"></textarea>
+                                <textarea name="body" class="form-control" rows="3" placeholder="コメントを入力">{{ old('body') }}</textarea>
                             </div>
                             <!-- 名前 -->
                             <div class="form-group">
                                 <label for="title">名前</label>
-                                <input type="text" name="title" class="form-control" value="{{ old('title') }}" placeholder="名前を入力">
+                                <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="名前を入力">
                             </div>
                             <button type="submit" class="btn btn-default">投稿</button>
                         </form>

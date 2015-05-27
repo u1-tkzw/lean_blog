@@ -64,7 +64,6 @@ class PostController extends Controller
      */
     public function postCreate()
     {
-
         $input = Input::only('user_id', 'title', 'body', 'date');
 
         // 投稿日時が空なら現在日時をセット
@@ -96,6 +95,44 @@ class PostController extends Controller
 
         Session::flash('info', "記事を投稿しました。");
         return Redirect::to('post/index');
+    }
+
+    /**
+     * 記事画面から渡された値を元にコメント追加
+     * 
+     * @return view
+     */
+    public function postComment()
+    {
+        // 入力値取得
+        $input = Input::only('post_id', 'name', 'body');
+
+        // バリデーション
+        $validate = Validator::make($input, [
+            'name' => 'required',
+            'body' => 'required',
+        ]);
+
+        // バリデーションで問題ありならエラーを返す
+        if ($validate->fails()) {
+            return Redirect::back()->withInput($input)
+            ->withErrors($validate->errors());
+        }
+
+        // 投稿日時をセット
+        $input['date'] = \Carbon\Carbon::now();
+
+        // 記事を DB に追加
+        $post = Comment::create([
+            'post_id' => $input['post_id'],
+            'name'    => $input['name'],
+            'body'    => $input['body'],
+            'date'    => $input['date'],
+        ]);
+        $post->save();
+
+        Session::flash('info', "コメントしました。");
+        return Redirect::back();
     }
 
 }
