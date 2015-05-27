@@ -47,6 +47,15 @@ class PostController extends Controller
         return view('post/view', ['post_id' => $post_id]);
     }
 
+    /** 投稿済み一覧画面を表示
+     * 
+     * @return view
+     */
+    public function getMypost()
+    {
+        return view('post/mypost');
+    }
+
     /**
      * 記事投稿画面を表示
      * 

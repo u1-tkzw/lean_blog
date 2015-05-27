@@ -1,11 +1,13 @@
 <script type="text/javascript">
-
+    // 記事取得用 URI
+    var url = "/api/blog/posts?user_id={{ Auth::user()->id }}";
+    
     // 記事データ(JSON)格納用の配列
     var res = [];
 
-    // 投稿済みの記事一覧(暫定で5件)を取得
+    // 投稿済みの記事一覧を取得
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/api/blog/posts?count=5", false);  // 同期処理(false)
+    xhr.open("GET", url, false);  // 同期処理(false)
     xhr.onreadystatechange = function () {
         // request complete
         if (xhr.readyState === 4) {
@@ -29,7 +31,7 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 
-                <div class="panel-heading">みんなの投稿一覧</div>
+                <div class="panel-heading">{{ Auth::user()->name }} の投稿一覧</div>
                 
 
                 <div class="panel-body">
