@@ -34,7 +34,7 @@
                 <div class="panel-body">
                     <script type="text/javascript">
                         for (var i in res){
-							posturl = "blog/post/" + i;
+							posturl = "blog/post/" + res[i].id;
 							document.write(posturl);
                             document.write("<hr>");
 							document.write("<a href=\"" + posturl + "\">");

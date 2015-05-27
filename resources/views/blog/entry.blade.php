@@ -25,7 +25,7 @@
 						<!-- 本文 -->
                         <div class="form-group">
                             <label for="body">本文</label>
-                            <textarea name="body" class="form-control" rows="15" value="{{ old('body') }}" placeholder="本文を入力"></textarea>
+                            <textarea name="body" class="form-control" rows="15"placeholder="本文を入力">{{ old('body') }}</textarea>
                         </div>
 						
 						<!-- 投稿日時 -->

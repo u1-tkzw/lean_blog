@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Blog;
 
@@ -12,7 +12,8 @@ use Session;
 use Input;
 use Validator;
 
-class BlogController extends Controller {
+class BlogController extends Controller
+{
 
     /**
      * 新しいコントローラーインスタンスの生成
@@ -21,8 +22,8 @@ class BlogController extends Controller {
      */
     public function __construct()
     {
-		// オプションで auth 対象を指定
-		$this->middleware('auth', ['only' => ['getEntry']]);
+        // オプションで auth 対象を指定
+        $this->middleware('auth', ['only' => ['getEntry']]);
     }
 
     /**
@@ -35,65 +36,68 @@ class BlogController extends Controller {
         return view('blog/index');
     }
 
-	/** 記事の画面を表示
-	 * 
-	 * @return view
-	 */
-	public function getPost($parameter)
-	{
-		// ★バリデーション
-		
-		$post_id = $parameter;
-		return view('blog/post', compact('post_id'));
-	}
+    /** 記事の画面を表示
+     * 
+     * @return view
+     */
+    public function getPost($parameter)
+    {
+        // ★バリデーション
 
-	/**
-	 * 記事投稿画面を表示
-	 * 
-	 * @return view
-	 */
+        $post_id = $parameter;
+        return view('blog/post', compact('post_id'));
+    }
+
+    /**
+     * 記事投稿画面を表示
+     * 
+     * @return view
+     */
     public function getEntry()
     {
         return view('blog/entry');
     }
-	
-	/**
-	 * 記事投稿画面から渡された値を元に記事追加
-	 * 
-	 * @return view
-	 */
-    public function postPost(){
-        
+
+    /**
+     * 記事投稿画面から渡された値を元に記事追加
+     * 
+     * @return view
+     */
+    public function postPost()
+    {
+
         $input = Input::only('user_id', 'title', 'body', 'date');
 
         // 投稿日時が空なら現在日時をセット
-        if ($input['date'] === ""){
-            $input['date'] = date('Y-m-d H:i:s');
+        if ($input['date'] === "") {
+//            $input['date'] = date('Y-m-d H:i:s');
+            $input['date'] = \Carbon\Carbon::now();
         }
-        
+
         // バリデーション
         $validate = Validator::make($input, [
             'title' => 'required',
-            'body' => 'required',
-            'date' => 'date_format:Y-m-d H\\:i\\:s',
+            'body'  => 'required',
+            'date'  => 'date_format:Y-m-d H\\:i\\:s',
         ]);
-		
+
         // バリデーションで問題ありならエラーを返す
-        if ($validate->fails()){
-			return Redirect::back()->withInput($input)
-				                   ->withErrors($validate->errors());
+        if ($validate->fails()) {
+            return Redirect::back()->withInput($input)
+            ->withErrors($validate->errors());
         }
-        
-		// 記事を DB に追加
-		$post = Post::create([
-			'user_id' => $input['user_id'],
-			'title' => $input['title'],
-			'body' => $input['body'],
-			'date' => $input['date'],
-		]);
-		$post->save();
-		
-		Session::flash('info', "記事を投稿しました。");
+
+        // 記事を DB に追加
+        $post = Post::create([
+            'user_id' => $input['user_id'],
+            'title'   => $input['title'],
+            'body'    => $input['body'],
+            'date'    => $input['date'],
+        ]);
+        $post->save();
+
+        Session::flash('info', "記事を投稿しました。");
         return view('blog.index');
     }
+
 }
