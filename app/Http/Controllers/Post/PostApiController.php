@@ -33,19 +33,34 @@ class PostApiController extends Controller
     public function getPosts()
     {
         // クエリパラメータ取得
-        $count = Input::has('count') ? Input::has('count') : 'all';
+        $count = Input::has('count') ? Input::get('count') : 'all';
+        $order = Input::has('order') ? Input::get('order') : 'desc';
         
-        // ★ここでクエリのバリデーションが必要？
-
+        // パラメータチェック
+        if (!in_array($order, ['desc', 'asc'])){
+            return App::abort(400);
+        }
+        if (!($count === 'all' || is_numeric($count))){
+            return App::abort(400);
+        }
+        
         switch ($count) {
-            case 'all':
-                $res = Post::all();
+            case 'all' :
+                if ($order === 'desc'){
+                    $res = Post::latest('date')->get();
+                } else {
+                    $res = Post::oldest('date')->get();
+                }
                 break;
             default :
-                $res = Post::latest('date')->take($count);
+                if ($order === 'desc'){
+                    $res = Post::latest('date')->take($count)->get();
+                } else {
+                    $res = Post::oldest('date')->take($count)->get();
+                }
         }
 
-        return $res;
+        return Response::json($res, 200, array(), JSON_PRETTY_PRINT);
     }
 
     /**
@@ -57,10 +72,16 @@ class PostApiController extends Controller
      */
     public function getPost($id)
     {
-        // ★バリデーション
+        // バリデーション
+        if (!is_numeric($id)){
+            return App::abort(400);
+        }
 
         // 記事ID($parameter)を元に記事を抽出
         $post = Post::find($id);
+        if (is_null($post)){
+            return App::abort(400);
+        }
 
         // 返却値生成
         $res             = [];
