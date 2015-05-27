@@ -9,6 +9,7 @@ use App\Comment;
 use Response;
 use Input;
 use Validator;
+use DB;
 
 class PostApiController extends Controller
 {
@@ -33,32 +34,34 @@ class PostApiController extends Controller
     public function getPosts()
     {
         // クエリパラメータ取得
-        $count = Input::has('count') ? Input::get('count') : 'all';
-        $order = Input::has('order') ? Input::get('order') : 'desc';
-        
+        $count   = Input::has('count') ? Input::get('count') : 'all';
+        $order   = Input::has('order') ? Input::get('order') : 'desc';
+        $user_id = Input::has('user_id') ? Input::get('user_id') : 'all';
+
         // パラメータチェック
-        if (!in_array($order, ['desc', 'asc'])){
+        if (!in_array($order, ['desc', 'asc'])) {
             return App::abort(400);
         }
-        if (!($count === 'all' || is_numeric($count))){
+        if (!($count === 'all' || is_numeric($count))) {
             return App::abort(400);
         }
-        
-        switch ($count) {
-            case 'all' :
-                if ($order === 'desc'){
-                    $res = Post::latest('date')->get();
-                } else {
-                    $res = Post::oldest('date')->get();
-                }
-                break;
-            default :
-                if ($order === 'desc'){
-                    $res = Post::latest('date')->take($count)->get();
-                } else {
-                    $res = Post::oldest('date')->take($count)->get();
-                }
+        if (!($user_id === 'all' || is_numeric($user_id))) {
+            return App::abort(400);
         }
+
+        // SQL 文構築
+        $sql_user_id = '';
+        if ($user_id !== 'all') {
+            $sql_user_id = 'where user_id = ' . $user_id . ' ';
+        }
+        $sql_limit = '';
+        if ($count !== 'all') {
+            $sql_limit = ' LIMIT ' . $count . ' ';
+        }
+        $sql = 'SELECT * FROM posts ' . $sql_user_id . 'ORDER BY date ' . $order . $sql_limit;
+
+        // SQL 実行
+        $res = DB::select($sql);
 
         return Response::json($res, 200, array(), JSON_PRETTY_PRINT);
     }
@@ -73,13 +76,13 @@ class PostApiController extends Controller
     public function getPost($id)
     {
         // バリデーション
-        if (!is_numeric($id)){
+        if (!is_numeric($id)) {
             return App::abort(400);
         }
 
         // 記事ID($parameter)を元に記事を抽出
         $post = Post::find($id);
-        if (is_null($post)){
+        if (is_null($post)) {
             return App::abort(400);
         }
 
