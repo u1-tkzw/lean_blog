@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Blog;
+namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Post;
@@ -12,7 +12,7 @@ use Session;
 use Input;
 use Validator;
 
-class BlogController extends Controller
+class PostController extends Controller
 {
 
     /**
@@ -23,7 +23,7 @@ class BlogController extends Controller
     public function __construct()
     {
         // オプションで auth 対象を指定
-        $this->middleware('auth', ['only' => ['getEntry']]);
+        $this->middleware('auth', ['only' => ['getCreate']]);
     }
 
     /**
@@ -33,19 +33,18 @@ class BlogController extends Controller
      */
     public function getIndex()
     {
-        return view('blog/index');
+        return view('post/index');
     }
 
     /** 記事の画面を表示
      * 
      * @return view
      */
-    public function getPost($parameter)
+    public function getView($post_id)
     {
         // ★バリデーション
 
-        $post_id = $parameter;
-        return view('blog/post', compact('post_id'));
+        return view('post/view', ['post_id' => $post_id]);
     }
 
     /**
@@ -53,9 +52,9 @@ class BlogController extends Controller
      * 
      * @return view
      */
-    public function getEntry()
+    public function getCreate()
     {
-        return view('blog/entry');
+        return view('post/create');
     }
 
     /**
@@ -63,14 +62,13 @@ class BlogController extends Controller
      * 
      * @return view
      */
-    public function postPost()
+    public function postCreate()
     {
 
         $input = Input::only('user_id', 'title', 'body', 'date');
 
         // 投稿日時が空なら現在日時をセット
         if ($input['date'] === "") {
-//            $input['date'] = date('Y-m-d H:i:s');
             $input['date'] = \Carbon\Carbon::now();
         }
 
@@ -97,7 +95,7 @@ class BlogController extends Controller
         $post->save();
 
         Session::flash('info', "記事を投稿しました。");
-        return view('blog.index');
+        return Redirect::to('post/index');
     }
 
 }

@@ -19,6 +19,9 @@
     <![endif]-->
 </head>
 <body>
+    <!-- トップへ戻る用 -->
+    <a name="top"></a>
+    
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -34,7 +37,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/') }}">Home</a></li>
-                    <li><a href="{{ url('/blog') }}">Blog</a></li>
+                    <li><a href="{{ url('/post') }}">Blog</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -45,7 +48,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/blog/entry') }}">記事投稿</a></li>
+                                <li><a href="{{ url('/post/create') }}">記事投稿</a></li>
                                 <li><a href="{{ url('/auth/logout') }}">ログアウト</a></li>
                             </ul>
                         </li>
@@ -57,7 +60,7 @@
 	
 	<!-- 情報表示 -->
 	@include('infobar')
-	
+
 	<!-- コンテンツ表示 -->
     @yield('content')
 

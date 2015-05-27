@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Blog;
+namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App;
 use App\Post;
 use App\Comment;
 use Response;
-use Request;
-use Redirect;
-use Session;
 use Input;
 use Validator;
 
-class BlogApiController extends Controller
+class PostApiController extends Controller
 {
 
     /**
@@ -24,7 +21,7 @@ class BlogApiController extends Controller
     public function __construct()
     {
         // オプションで auth 対象を指定
-        $this->middleware('auth', ['only' => ['postPost']]);
+        //$this->middleware('auth', ['only' => ['']];
     }
 
     /**
@@ -37,6 +34,7 @@ class BlogApiController extends Controller
     {
         // クエリパラメータ取得
         $count = Input::has('count') ? Input::has('count') : 'all';
+        
         // ★ここでクエリのバリデーションが必要？
 
         switch ($count) {
@@ -44,7 +42,6 @@ class BlogApiController extends Controller
                 $res = Post::all();
                 break;
             default :
-//                $res = Post::all()->sortByDesc('date')->take($query['count']);
                 $res = Post::latest('date')->take($count);
         }
 
@@ -61,12 +58,9 @@ class BlogApiController extends Controller
     public function getPost($id)
     {
         // ★バリデーション
-        // 記事ID($parameter)を元に記事を抽出
-//        $post = Post::where('id', $parameter)->first();
-        $post = Post::find($id);
 
-        // 記事IDに紐付くコメントを抽出
-//        $comments = Comment::where('post_id', $id)->get();
+        // 記事ID($parameter)を元に記事を抽出
+        $post = Post::find($id);
 
         // 返却値生成
         $res             = [];
