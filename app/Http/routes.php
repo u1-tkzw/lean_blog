@@ -20,4 +20,5 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
     'post'     => 'Post\PostController',
     'api/blog' => 'Post\PostApiController',
+    'user'     => 'User\UserController',
 ]);

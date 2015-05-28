@@ -43,16 +43,15 @@
                     <script type="text/javascript">
                         for (var i in res) {
                             posturl = "post/view/" + res[i].id;
-                            document.write("<hr>");
+                            document.write("<h3>" + res[i].date + "</h3>");
                             document.write("<a href=\"" + posturl + "\">");
-                            document.write("<h3>" + res[i].title + "</h3>");
+                            document.write("<h2>" + res[i].title + "</h2>");
                             document.write("</a>");
-                            document.write("<p class=\"text-right\">" + res[i].date + "</p>");
+                            document.write("<div>" + nl2br(res[i].body) + "</div>");
                             document.write("<hr>");
-                            document.write("<div>" + res[i].body + "</div>");
-                            document.write("<p><a href=\"#top\">ページトップへ戻る</a></p>");
                         }
                     </script>
+                    <p class="text-center"><a href=\"#top\">ページトップへ戻る</a></p>
                 </div>
             </div>
         </div>

@@ -52,6 +52,8 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/post/create') }}"><span class="glyphicon glyphicon-pencil"></span> 記事を書く</a></li>
                                 <li><a href="{{ url('/post/mypost') }}"><span class="glyphicon glyphicon-file"></span> 投稿済み一覧</a></li>
+                                <li><a href="{{ url('/user/config') }}"><span class="glyphicon glyphicon-wrench"></span> ブログ設定</a></li>
+                                <li><a href="{{ url('/user/profile') }}"><span class="glyphicon glyphicon-user"></span> ユーザ設定</a></li>
                                 <li><a href="{{ url('/auth/logout') }}"><span class="glyphicon glyphicon-off"></span> ログアウト</a></li>
                             </ul>
                         </li>
