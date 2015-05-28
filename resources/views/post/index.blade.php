@@ -1,5 +1,9 @@
 <script type="text/javascript">
-
+    // 改行コード処理用関数
+    function nl2br(str) {
+        return str.replace(/\r?\n/g, "<br />");
+    }
+    
     // 記事データ(JSON)格納用の配列
     var res = [];
 
@@ -19,6 +23,7 @@
         }
     }
     xhr.send();
+    
 </script>
 
 @extends('app')
@@ -40,12 +45,11 @@
                             document.write("<a href=\"" + posturl + "\">");
                             document.write("<h3>" + res[i].title + "</h3>");
                             document.write("</a>");
+                            document.write("<div>" + nl2br(res[i].body) + "</div>");
                             document.write("<p class=\"text-right\">" + res[i].date + "</p>");
-                            document.write("<hr>");
-                            document.write("<div>" + res[i].body + "</div>");
-                            document.write("<p><a href=\"#top\">ページトップへ戻る</a></p>");
                         }
                     </script>
+                    <p class="text-center"><a href=\"#top\">ページトップへ戻る</a></p>
                 </div>
             </div>
         </div>

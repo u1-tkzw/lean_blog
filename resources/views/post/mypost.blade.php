@@ -1,4 +1,9 @@
 <script type="text/javascript">
+    // 改行コード処理用関数
+    function nl2br(str) {
+        return str.replace(/\r?\n/g, "<br />");
+    }
+    
     // 記事取得用 URI
     var url = "/api/blog/posts?user_id={{ Auth::user()->id }}";
     

@@ -1,5 +1,9 @@
 <script type="text/javascript">
-
+    // 改行コード処理用関数
+    function nl2br(str) {
+        return str.replace(/\r?\n/g, "<br />");
+    }
+    
     // 記事データ(JSON)格納用の配列
     var res = [];
 
@@ -43,7 +47,7 @@
                 <div class="panel-body">
                     <!-- 本文表示部 -->
                     <script type="text/javascript">
-                        document.write("<div>" + res["post"].body + "</div>");
+                        document.write("<div>" + nl2br(res["post"].body) + "</div>");
                     </script>
 
                     <br>
@@ -57,7 +61,7 @@
                             <script type="text/javascript">
                                 for (var i in res["comments"]) {
                                     document.write("<strong>" + res["comments"][i].name + "</strong><br>");
-                                    document.write("<div>" + res["comments"][i].body + "</div><br>");
+                                    document.write("<div>" + nl2br(res["comments"][i].body) + "</div><br>");
                                     document.write("<small>" + res["comments"][i].date + "</small><br>");
                                     document.write("<hr>");
                                 }
