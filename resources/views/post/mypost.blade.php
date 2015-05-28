@@ -1,8 +1,8 @@
 <script type="text/javascript">
     // 改行コード処理用関数
-    function nl2br(str) {
-        return str.replace(/\r?\n/g, "<br />");
-    }
+//    function nl2br(str) {
+//        return str.replace(/\r?\n/g, "<br />");
+//    }
     
     // 記事取得用 URI
     var url = "/api/blog/posts?user_id={{ Auth::user()->id }}";
@@ -47,7 +47,8 @@
                             document.write("<a href=\"" + posturl + "\">");
                             document.write("<h2>" + res[i].title + "</h2>");
                             document.write("</a>");
-                            document.write("<div>" + nl2br(res[i].body) + "</div>");
+//                            document.write("<div>" + nl2br(res[i].body) + "</div>");
+                            document.write("<div>" + res[i].body + "</div>");
                             document.write("<hr>");
                         }
                     </script>
