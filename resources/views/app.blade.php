@@ -17,6 +17,15 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- Scripts -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/lang/ja.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+    <?= Html::script('js/library-for-view.js') ?>
 </head>
 <body>
     <!-- トップへ戻る用 -->
@@ -52,7 +61,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/post/create') }}"><span class="glyphicon glyphicon-pencil"></span> 記事を書く</a></li>
                                 <li><a href="{{ url('/post/mypost') }}"><span class="glyphicon glyphicon-file"></span> 投稿済み一覧</a></li>
-                                <li><a href="{{ url('/user/config') }}"><span class="glyphicon glyphicon-wrench"></span> ブログ設定</a></li>
+                                <li><a href="{{ url('/user/config') }}"><span class="glyphicon glyphicon-cog"></span> ブログ設定</a></li>
                                 <li><a href="{{ url('/user/profile') }}"><span class="glyphicon glyphicon-user"></span> ユーザ設定</a></li>
                                 <li><a href="{{ url('/auth/logout') }}"><span class="glyphicon glyphicon-off"></span> ログアウト</a></li>
                             </ul>
@@ -68,14 +77,6 @@
 
 	<!-- コンテンツ表示 -->
     @yield('content')
-
-    <!-- Scripts -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/lang/ja.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 
 </body>
 </html>

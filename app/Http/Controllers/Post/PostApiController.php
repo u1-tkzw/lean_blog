@@ -79,7 +79,7 @@ class PostApiController extends Controller
             $post->body =  nl2br($post->body);
             return $post;
         });
-
+        
         return Response::json($res, 200, array(), JSON_PRETTY_PRINT);
     }
 

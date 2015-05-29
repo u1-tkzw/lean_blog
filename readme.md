@@ -19,6 +19,8 @@
 
 ### 既知の問題
 - datetimepicker が動かない
+- ログイン後に http://~~/blog に戻ろうとしてエラーになるときがある。  
+  /post -> login -> /blog になる。
 
 ### DB 設計
 ##### Users

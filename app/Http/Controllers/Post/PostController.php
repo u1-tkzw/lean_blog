@@ -23,7 +23,7 @@ class PostController extends Controller
     public function __construct()
     {
         // オプションで auth 対象を指定
-        $this->middleware('auth', ['only' => ['getCreate', 'getMypost']]);
+        $this->middleware('auth', ['only' => ['getCreate', 'getMypost', 'getEdit']]);
     }
 
     /**
@@ -43,7 +43,7 @@ class PostController extends Controller
     public function getView($post_id)
     {
         // ★バリデーション
-
+        //dd(Input::all());
         return view('post/view', ['post_id' => $post_id]);
     }
 
@@ -66,6 +66,17 @@ class PostController extends Controller
         return view('post/create');
     }
 
+    /**
+     * 投稿記事の編集画面を表示
+     * 
+     * @return view
+     */
+    public function getEdit(Request $reqest)
+    {
+        dd($reqest);
+        return view('post/edit');
+    }
+    
     /**
      * 記事投稿画面から渡された値を元に記事追加
      * 

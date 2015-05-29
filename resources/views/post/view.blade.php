@@ -1,46 +1,76 @@
-<script type="text/javascript">
-    // 改行コード処理用関数
-    function nl2br(str) {
-        return str.replace(/\r?\n/g, "<br />");
-    }
-    
-    // 記事データ(JSON)格納用の配列
-    var res = [];
-
-    // API 用の URL 生成
-    var url = "/api/blog/post/" + <?php echo $post_id; ?>;
-
-    // 記事を取得
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, false);  // 同期処理(false)
-    xhr.onreadystatechange = function () {
-        // request complete
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                res = JSON.parse(xhr.responseText);
-            } else if (xhr.status === 204) {
-                // No Content 時の処理
-            } else {
-                // Error 時の処理
-            }
-        }
-    }
-    xhr.send();
-</script>
-
 @extends('app')
 
 @section('content')
+<script type="text/javascript">
+    // ベース URL 取得(暫定処置)
+    var url_base = "<?= URL::to('/') ?>" + '/';
+
+    // API 用の URL 生成
+    var url = url_base + 'api/blog/post/' + <?php echo $post_id; ?>;
+    //alert(url);
+
+    // 記事データ取得
+    $.getJSON(url, null, function(data){
+        console.log(data);
+    });
+    //var res = [];
+    //var res = getPostData(url);
+    //console.log("view側");
+    //console.log(res);
+</script>
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 <!-- ヘッダ表示部 -->
                 <div class="panel-heading">	
-                    <script type="text/javascript">
-                        document.write("<h3>" + res["post"].title + "</h3>");
-                        document.write("<small>" + res["post"].date + "</small>");
-                    </script>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <script type="text/javascript">
+                                var res = [];
+                                getPostData(url, res);
+                                console.log(res);
+                                document.write("<p>" +  res['post'].title + "</p>");
+                                
+                                
+//                                $.ajax({
+//                                    type: 'GET',
+//                                    url: url,
+//                                    cache: false,
+//                                    datatype: 'json',
+//                                    async: false,
+//                                    success: function (data, textStatus, jqXHR) {
+//                                        res = data;
+//                                        console.log(data);
+//                                    }
+//                                });
+//                                console.log(res);
+                                
+                                /*
+                                 $.getJSON(url,null,funciton(data,status){
+                                 console.log(data);
+                                 });
+                                 */
+                                //document.write("<h3>" + res['post'].title + "</h3>");
+                                // document.write("<small>" + res['post'].date + "</small>");
+                            </script>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <script type="text/javascript">
+                                document.write("<small>" + res['post'].date + "</small>");
+                            </script>
+                        </div>
+                        <div class="col-md-5 col-md-offset-2 text-right">
+                            @if (!Auth::guest())
+                            <?= Form::open() ?>
+                            <input type="button" value="編集" class="btn btn-primary btn-sm" onclick="editSubmit(url_base + 'post/edit/' + res['post'].id)">
+                            <input type="button" value="削除" class="btn btn-danger btn-sm" onclick="deletSubmit();">
+                            <?= Form::close() ?>
+                            @endif
+                        </div>
+                    </div>
                 </div>
                 <a name="top"></a>
 
@@ -59,10 +89,10 @@
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <script type="text/javascript">
-                                for (var i in res["comments"]) {
-                                    document.write("<strong>" + res["comments"][i].name + "</strong><br>");
-                                    document.write("<div>" + nl2br(res["comments"][i].body) + "</div><br>");
-                                    document.write("<small>" + res["comments"][i].date + "</small><br>");
+                                for (var i in res['comments']) {
+                                    document.write("<strong>" + res['comments'][i].name + "</strong><br>");
+                                    document.write("<div>" + nl2br(res['comments'][i].body) + "</div><br>");
+                                    document.write("<small>" + res['comments'][i].date + "</small>");
                                     document.write("<hr>");
                                 }
                             </script>
