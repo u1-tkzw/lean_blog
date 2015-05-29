@@ -41,8 +41,9 @@
 
                 <div class="panel-body">
                     <script type="text/javascript">
+                        var posturl = "";
                         for (var i in res) {
-                            posturl = "post/view/" + res[i].id;
+                            posturl = "view/" + res[i].id;
                             document.write("<h3>" + res[i].date + "</h3>");
                             document.write("<a href=\"" + posturl + "\">");
                             document.write("<h2>" + res[i].title + "</h2>");
