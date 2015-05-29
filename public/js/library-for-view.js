@@ -10,27 +10,6 @@ function nl2br(str) {
     return str.replace(/\\r?\\n/g, '<br />');
 }
 
-function getPostData(url){
-
-    // 返却値格納用配列
-    var res = [];
-
-    // 記事を取得
-    $.ajax({
-        type: 'GET',
-        url: url,
-        cache: false,
-        datatype: 'json',
-        async: false,
-        success: function (data, textStatus, jqXHR) {
-            res = data;
-        }
-    });
-}
-
-function testA(){
-    
-}
 /*
 // 編集ボタン用
 function editSubmit(url) {

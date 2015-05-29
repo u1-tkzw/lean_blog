@@ -7,16 +7,24 @@
 
     // API 用の URL 生成
     var url = url_base + 'api/blog/post/' + <?php echo $post_id; ?>;
-    //alert(url);
 
-    // 記事データ取得
-    $.getJSON(url, null, function(data){
-        console.log(data);
+    // 記事データ取得・注入
+    $(function(){
+        $.getJSON(url, null, function(data,status){
+            // 記事注入(1件)
+            $('#post_title').text(data['post'].title);
+            $('#post_date').text(data['post'].date);
+            $('#post_body').text(nl2br(data['post'].body));
+            console.log(data['post'].body);
+            console.log(nl2br(data['post'].body));
+            // コメント注入(n件)
+            for (var i in data['comments']) {
+                $('#comment_name').text(data['comments'][i].name);
+                $('#comment_body').text(nl2br(data['comments'][i].body));
+                $('#comment_date').text(data['comments'][i].date);
+            }
+        });
     });
-    //var res = [];
-    //var res = getPostData(url);
-    //console.log("view側");
-    //console.log(res);
 </script>
 <div class="container">
     <div class="row">
@@ -26,48 +34,19 @@
                 <div class="panel-heading">	
                     <div class="row">
                         <div class="col-md-12">
-                            <script type="text/javascript">
-                                var res = [];
-                                getPostData(url, res);
-                                console.log(res);
-                                document.write("<p>" +  res['post'].title + "</p>");
-                                
-                                
-//                                $.ajax({
-//                                    type: 'GET',
-//                                    url: url,
-//                                    cache: false,
-//                                    datatype: 'json',
-//                                    async: false,
-//                                    success: function (data, textStatus, jqXHR) {
-//                                        res = data;
-//                                        console.log(data);
-//                                    }
-//                                });
-//                                console.log(res);
-                                
-                                /*
-                                 $.getJSON(url,null,funciton(data,status){
-                                 console.log(data);
-                                 });
-                                 */
-                                //document.write("<h3>" + res['post'].title + "</h3>");
-                                // document.write("<small>" + res['post'].date + "</small>");
-                            </script>
+                            <h2 id="post_title">Title</h2>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-5">
-                            <script type="text/javascript">
-                                document.write("<small>" + res['post'].date + "</small>");
-                            </script>
+                            <small id="post_date">Date</small>
                         </div>
                         <div class="col-md-5 col-md-offset-2 text-right">
                             @if (!Auth::guest())
-                            <?= Form::open() ?>
-                            <input type="button" value="編集" class="btn btn-primary btn-sm" onclick="editSubmit(url_base + 'post/edit/' + res['post'].id)">
-                            <input type="button" value="削除" class="btn btn-danger btn-sm" onclick="deletSubmit();">
-                            <?= Form::close() ?>
+                                <?= Form::open() ?>
+                                    <input type="button" value="編集" class="btn btn-primary btn-sm" onclick="editSubmit(url_base + 'post/edit/' + res['post'].id)">
+                                    <input type="button" value="削除" class="btn btn-danger btn-sm" onclick="deletSubmit();">
+                                <?= Form::close() ?>
                             @endif
                         </div>
                     </div>
@@ -76,29 +55,18 @@
 
                 <div class="panel-body">
                     <!-- 本文表示部 -->
-                    <script type="text/javascript">
-                        document.write("<div>" + nl2br(res["post"].body) + "</div>");
-                    </script>
-
-                    <br>
+                    <div id="post_body">Body</div><br>
                     <hr>
-
                     <!-- コメント表示部 -->
                     <strong>コメント</strong><br>
-
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <script type="text/javascript">
-                                for (var i in res['comments']) {
-                                    document.write("<strong>" + res['comments'][i].name + "</strong><br>");
-                                    document.write("<div>" + nl2br(res['comments'][i].body) + "</div><br>");
-                                    document.write("<small>" + res['comments'][i].date + "</small>");
-                                    document.write("<hr>");
-                                }
-                            </script>
+                            <strong id="comment_name">Name</strong><br>
+                            <div id="comment_body">Body</div><br>
+                            <small id="comment_date">Date</small><br>
+                            <hr>
                         </div>
                     </div>
-
                     <!-- コメントボタン -->
                     <div class="text-center">
                         <button type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#comment_form">
