@@ -34,14 +34,21 @@ class PostApiController extends Controller
     public function getPosts()
     {
         // クエリパラメータ取得
-        $count   = Input::has('count') ? Input::get('count') : 'all';
-        $order   = Input::has('order') ? Input::get('order') : 'desc';
-        $user_id = Input::has('user_id') ? Input::get('user_id') : 'all';
+        $count   = Input::get('count', 'all');
+        $order   = Input::get('order', 'desc');
+        $user_id = Input::get('user_id', 'all');
 
-        // パラメータチェック
-        if (!in_array($order, ['desc', 'asc'])) {
-            return App::abort(400);
+        $validator = \Validator::make(['order' => $order], [
+            'order' => 'in:desc,asc'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
         }
+        // パラメータチェック
+//        if (!in_array($order, ['desc', 'asc'])) {
+//            return App::abort(400);
+//        }
+        // TODO カスタムバリデータ
         if (!($count === 'all' || is_numeric($count))) {
             return App::abort(400);
         }
@@ -49,19 +56,29 @@ class PostApiController extends Controller
             return App::abort(400);
         }
 
+        $query = (new Post)->query();
+        
         // SQL 文構築
         $sql_user_id = '';
         if ($user_id !== 'all') {
-            $sql_user_id = 'where user_id = ' . $user_id . ' ';
+//            $sql_user_id = 'where user_id = ' . $user_id . ' ';
+            $query->where('user_id', '=', $user_id);
+            
         }
         $sql_limit = '';
         if ($count !== 'all') {
-            $sql_limit = ' LIMIT ' . $count . ' ';
+//            $sql_limit = ' LIMIT ' . $count . ' ';
+            $query->limit($count);
         }
-        $sql = 'SELECT * FROM posts ' . $sql_user_id . 'ORDER BY date ' . $order . $sql_limit;
+//        $sql = 'SELECT * FROM posts ' . $sql_user_id . 'ORDER BY date ' . $order . $sql_limit;
 
         // SQL 実行
-        $res = DB::select($sql);
+//        $res = DB::select($sql);
+        $res = $query->get();
+        $res->each(function($post) {
+            $post->body =  nl2br($post->body);
+            return $post;
+        });
 
         return Response::json($res, 200, array(), JSON_PRETTY_PRINT);
     }
@@ -81,7 +98,7 @@ class PostApiController extends Controller
         }
 
         // 記事ID($parameter)を元に記事を抽出
-        $post = Post::find($id);
+        $post = Post::findorFail($id);
         if (is_null($post)) {
             return App::abort(400);
         }

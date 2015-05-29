@@ -23,7 +23,7 @@ class PostController extends Controller
     public function __construct()
     {
         // オプションで auth 対象を指定
-        $this->middleware('auth', ['only' => ['getCreate']]);
+        $this->middleware('auth', ['only' => ['getCreate', 'getMypost']]);
     }
 
     /**
