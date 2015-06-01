@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Redirect;
+
 class WelcomeController extends Controller {
 
     /*
@@ -30,7 +32,8 @@ class WelcomeController extends Controller {
      */
     public function index()
     {
-        return view('welcome');
+        return Redirect::to('post');
+        //return view('welcome');
     }
 
 }
