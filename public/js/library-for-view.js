@@ -1,3 +1,5 @@
+var url_base = getBaseURL();
+var url_home = url_base + '/post/mypost';
 /*
 function nl2br(str) {
     return str.replace(/\\r?\\n/g, '<br />');
@@ -13,19 +15,28 @@ function getBaseURL(){
     return url;
 }
 function editSubmit(post_id) {
-    var url_base = getBaseURL();
     var url = url_base + '/post/edit/' + post_id;
     location.href = url;
 }
 function deleteSubmit(post_id) {
+    var url = url_base + '/api/blog/post/' + post_id;
     if (confirm('この記事を本当に削除しますか？')) {
-        var url_base = getBaseURL();
-        var url = url_base + '/post/delete/' + post_id;
-        console.log(url);
-        location.href = url;
-        /*
-        document.frm.action = url;
-        document.frm.submit();
-        */
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+        });
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function(data) {
+                alert('記事を削除しました。');
+                location.href = url_home;
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('記事の削除に失敗しました。');
+                location.href = url_home;
+            }
+        });
     }
 }

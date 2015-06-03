@@ -25,6 +25,18 @@ class PostApiController extends Controller
         //$this->middleware('auth', ['only' => ['']];
     }
 
+    public function deletePost($id){
+        //$post = Post::findorFail($id);  // TODO: Exception 化
+        $post = Post::find($id);
+        if (is_null($post)) {
+            return App::abort(400);
+        }
+
+        $post->delete();
+
+        $res = Response::make('delete success.', 200);
+        return $res;
+    }
     /**
      * 投稿記事一覧(Posts)取得用の API
      * クエリパラメータで取得件数を指定でき、指定件数分の投稿記事を返す。
@@ -91,7 +103,8 @@ class PostApiController extends Controller
         }
 
         // 記事ID($parameter)を元に記事を抽出
-        $post = Post::findorFail($id);
+        //$post = Post::findorFail($id);  // TODO: Exception 化
+        $post = Post::find($id);
         if (is_null($post)) {
             return App::abort(400);
         }
