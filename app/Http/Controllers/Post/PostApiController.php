@@ -38,16 +38,14 @@ class PostApiController extends Controller
         $order   = Input::get('order', 'desc');
         $user_id = Input::get('user_id', 'all');
 
+        // バリデーション
         $validator = \Validator::make(['order' => $order], [
             'order' => 'in:desc,asc'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
-        // パラメータチェック
-//        if (!in_array($order, ['desc', 'asc'])) {
-//            return App::abort(400);
-//        }
+
         // TODO カスタムバリデータ
         if (!($count === 'all' || is_numeric($count))) {
             return App::abort(400);
@@ -57,29 +55,24 @@ class PostApiController extends Controller
         }
 
         $query = (new Post)->query();
-        
+
         // SQL 文構築
         $sql_user_id = '';
         if ($user_id !== 'all') {
-//            $sql_user_id = 'where user_id = ' . $user_id . ' ';
             $query->where('user_id', '=', $user_id);
-            
         }
         $sql_limit = '';
         if ($count !== 'all') {
-//            $sql_limit = ' LIMIT ' . $count . ' ';
             $query->limit($count);
         }
-//        $sql = 'SELECT * FROM posts ' . $sql_user_id . 'ORDER BY date ' . $order . $sql_limit;
 
         // SQL 実行
-//        $res = DB::select($sql);
         $res = $query->get();
         $res->each(function($post) {
-            $post->body =  nl2br($post->body);
+            $post->body = nl2br($post->body);
             return $post;
         });
-        
+
         return Response::json($res, 200, array(), JSON_PRETTY_PRINT);
     }
 
@@ -103,10 +96,18 @@ class PostApiController extends Controller
             return App::abort(400);
         }
 
+        // $post に紐付くコメント抽出
+        $comments = $post->comments;
+
         // 返却値生成
+        $post->body = nl2br($post->body);
+        foreach ($comments as $comment) {
+            $comment->body = nl2br($comment->body);
+        }
+        //dd($post,$comments);
         $res             = [];
         $res['post']     = $post;
-        $res['comments'] = $post->comments;
+        $res['comments'] = $comments;
 
         return Response::json($res, 200, array(), JSON_PRETTY_PRINT);
     }
