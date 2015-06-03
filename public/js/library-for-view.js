@@ -1,27 +1,31 @@
-
-/**
- * 改行コード処理用関数
- * 受け取った文字列の改行コード(\r,\n)を <br /> に置換
- * 
- * @param {type} str
- * @returns {unresolved}
- */ 
+/*
 function nl2br(str) {
     return str.replace(/\\r?\\n/g, '<br />');
 }
-
-/*
-// 編集ボタン用
-function editSubmit(url) {
-    alert(url);
+*/
+function getPostID(){
+    var pathname = location.pathname;
+    var strArray = pathname.split('/');
+    return strArray[3];
+}
+function getBaseURL(){
+    var url = location.protocol + '//' + location.host;
+    return url;
+}
+function editSubmit(post_id) {
+    var url_base = getBaseURL();
+    var url = url_base + '/post/edit/' + post_id;
     location.href = url;
 }
-// 削除ボタン用
-function deleteSubmit() {
-    if (confirm('本当に削除しますか？')) {
-        var url = '/delete/' + res['post'].id;
+function deleteSubmit(post_id) {
+    if (confirm('この記事を本当に削除しますか？')) {
+        var url_base = getBaseURL();
+        var url = url_base + '/post/delete/' + post_id;
+        console.log(url);
+        location.href = url;
+        /*
         document.frm.action = url;
         document.frm.submit();
+        */
     }
 }
-*/

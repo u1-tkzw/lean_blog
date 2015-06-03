@@ -43,7 +43,7 @@ class PostController extends Controller
     public function getView($post_id)
     {
         // ★バリデーション
-        //dd(Input::all());
+        Post::findOrFail($post_id);
         return view('post/view', ['post_id' => $post_id]);
     }
 
@@ -71,12 +71,12 @@ class PostController extends Controller
      * 
      * @return view
      */
-    public function getEdit(Request $reqest)
+    public function getEdit($id)
     {
-        dd($reqest);
-        return view('post/edit');
+        $post = Post::findOrFail($id);
+        return view('post/edit',['post' => $post]);
     }
-    
+
     /**
      * 記事投稿画面から渡された値を元に記事追加
      * 
@@ -116,7 +116,47 @@ class PostController extends Controller
         Session::flash('info', "記事を投稿しました。");
         return Redirect::to('post/index');
     }
+    
+    /**
+     * 編集した記事を保存
+     * 
+     * @return view
+     */
+    public function putEdit()
+    {
+        $input = Input::only('post_id', 'title', 'body', 'date');
 
+        // 投稿日時が空なら現在日時をセット
+        if ($input['date'] === "") {
+            $input['date'] = \Carbon\Carbon::now();
+        }
+        
+        // バリデーション
+        $validate = Validator::make($input, [
+            'title' => 'required',
+            'body'  => 'required',
+            'date'  => 'date_format:Y-m-d H\\:i\\:s',
+        ]);
+
+        // バリデーションで問題ありならエラーを返す
+        if ($validate->fails()) {
+            return Redirect::back()->withInput($input)
+            ->withErrors($validate->errors());
+        }
+        
+        // 元の記事を取得
+        $post = Post::findOrFail($input['post_id']);
+        
+        // 記事を更新
+        $post->title = $input['title'];
+        $post->body = $input['body'];
+        $post->date = $input['date'];
+        $post->save();
+
+        Session::flash('info', "記事を更新しました。");
+        return Redirect::to('post/index');
+    }
+    
     /**
      * 記事画面から渡された値を元にコメント追加
      * 

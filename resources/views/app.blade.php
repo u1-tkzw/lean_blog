@@ -19,13 +19,15 @@
     <![endif]-->
     
     <!-- Scripts -->
+    <?= Html::script('js/library-for-view.js') ?>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/lang/ja.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
-    <?= Html::script('js/library-for-view.js') ?>
+    <script src="//cdn.jsdelivr.net/jsrender/1.0pre35/jsrender.min.js"></script>
+
 </head>
 <body>
     <!-- トップへ戻る用 -->
