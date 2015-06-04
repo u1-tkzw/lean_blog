@@ -11,6 +11,11 @@ class Post extends Model {
      */
     protected $fillable = ['user_id', 'title', 'body', 'date'];
 
+    /**
+     * comments
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class);

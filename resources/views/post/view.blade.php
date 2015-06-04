@@ -9,13 +9,17 @@
     <hr>
 </script>
 
+<!-- コメント表示用テンプレート(jsRender) -->
+<script id="form_template" type="text/x-jsrender">
+    <?= Form::open() ?>
+        <input type="hidden" id="postId" name="postId" value="{@:post_id@}" />
+        <input type="button" id="editBtn" value="編集" class="btn btn-primary btn-sm"  />
+        <input type="button" id="deleteBtn" value="削除" class="btn btn-danger btn-sm"  />
+    <?= Form::close() ?>
+</script>
+
+
 <script type="text/javascript">
-    // 苦肉の策
-    @if (!Auth::guest())
-        var user_id = <?= Auth::user()->id ?>;
-    @else
-        var user_id = 'dummy';
-    @endif
     // 記事ID 取得
     var post_id = getPostID();
     // ベースURL取得
@@ -25,6 +29,7 @@
 
     // 記事データ取得・注入
     $(function(){
+        var user_id = $('#userId').val();
         $.getJSON(url, null, function(data,status){
             // 記事注入(1件)
             $('#post_title').text(data['post'].title);
@@ -34,17 +39,20 @@
             $.views.settings.delimiters("{@","@}");
             var result = $("#comments_template").render(data['comments']);
             $("#comments_area").html(result);
-            var button_html = "<form action=\"\" method=\"post\">\n\
-                        <input type=\"button\" value=\"編集\" class=\"btn btn-primary btn-sm\" onclick=\"editSubmit(post_id)\">\n\
-                        <input type=\"button\" value=\"削除\" class=\"btn btn-danger btn-sm\" onclick=\"deleteSubmit(post_id)\">\n\
-                    </form>";
+            var button_html = $("#form_template").render({"post_id": post_id});
             if (data['post'].user_id == user_id){
                 $('#control_button_area').html(button_html);
             }
         });
+        $(document).on('click', '#deleteBtn', function() {
+            deleteSubmit(post_id);
+        });;
+        $(document).on('click', '#editBtn', function() {
+            editSubmit(post_id);
+        });;
     });
 </script>
-
+<input type="hidden" id="userId" name="userId" value="{{ $user_id }}" />
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -63,7 +71,8 @@
                             <small id="post_date"></small>
                         </div>
                         <!-- ボタン表示部 -->
-                        <div class="col-md-5 col-md-offset-2 text-right" id="control_button_area"></div>
+                        <div class="col-md-5 col-md-offset-2 text-right" id="control_button_area">
+                        </div>
                     </div>
                 </div>
                 <a name="top"></a>
@@ -116,3 +125,6 @@
     </div>
 </div>
 @endsection
+
+@section('scripts')
+@stop

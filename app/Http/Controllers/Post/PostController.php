@@ -44,7 +44,11 @@ class PostController extends Controller
     {
         // ★バリデーション
         Post::findOrFail($post_id);
-        return view('post/view', ['post_id' => $post_id]);
+        $userId = 'dummy';
+        if (\Auth::check()) {
+            $userId = \Auth::id();
+        }
+         return view('post/view', ['post_id' => $post_id, 'user_id' => $userId]);
     }
 
     /** 投稿済み一覧画面を表示
@@ -138,7 +142,7 @@ class PostController extends Controller
         $validate = Validator::make($input, [
             'title' => 'required',
             'body'  => 'required',
-            'date'  => 'date_format:Y-m-d H\\:i\\:s',
+            'date'  => 'date_format:Y/m/d H:i',
         ]);
 
         // バリデーションで問題ありならエラーを返す
@@ -153,7 +157,7 @@ class PostController extends Controller
         // 記事を更新
         $post->title = $input['title'];
         $post->body = $input['body'];
-        $post->date = $input['date'];
+        $post->date = \Carbon\Carbon::createFromFormat('Y/m/d H:i', $input['date']);
         $post->save();
 
         Session::flash('info', "記事を更新しました。");

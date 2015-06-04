@@ -21,12 +21,12 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
+
     <!-- Scripts -->
-    <script src="{{ asset('js/library-for-view.js') }}" type="text/javascript"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/jsrender/1.0pre35/jsrender.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/library-for-view.js') }}" type="text/javascript"></script>
 
     <!-- DatatimePicker -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.datetimepicker.css') }}"/ >
@@ -83,6 +83,6 @@
 
 	<!-- コンテンツ表示 -->
     @yield('content')
-    
+
 </body>
 </html>

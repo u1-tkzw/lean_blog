@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Post;
 use App\Http\Controllers\Controller;
 use App;
 use App\Post;
-use App\Comment;
 use Response;
 use Input;
-use Validator;
-use DB;
 
 class PostApiController extends Controller
 {
@@ -33,7 +30,10 @@ class PostApiController extends Controller
             return App::abort(400);
         }
 
-        $post->delete();
+        \DB::transaction(function() use ($post) {
+            $post->comments()->delete();
+            $post->delete();
+        });
 
         $res = Response::make('delete success.', 200);
         return $res;
