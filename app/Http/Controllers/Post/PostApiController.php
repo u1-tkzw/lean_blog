@@ -88,7 +88,7 @@ class PostApiController extends Controller
         // 改行コード加工・コメント追加
         foreach ($posts as $post){
             $post->body = nl2br($post->body);
-            
+
             if ($with_comments === 'true'){
                 // $post に紐付くコメント抽出・追加
                 $comments = $post->comments;

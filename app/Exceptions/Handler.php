@@ -2,6 +2,7 @@
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler {
 
@@ -36,7 +37,12 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $e)
     {
+        // モデルが見つからない場合の例外
+        if ($e instanceof ModelNotFoundException)
+        {
+            dd($e);
+            /* TODO: API 側で使用する予定。レスポンスコードを返すようにしたい。*/
+        }
         return parent::render($request, $e);
     }
-
 }

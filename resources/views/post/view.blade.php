@@ -10,6 +10,12 @@
 </script>
 
 <script type="text/javascript">
+    // 苦肉の策
+    @if (!Auth::guest())
+        var user_id = <?= Auth::user()->id ?>;
+    @else
+        var user_id = 'dummy';
+    @endif
     // 記事ID 取得
     var post_id = getPostID();
     // ベースURL取得
@@ -23,11 +29,18 @@
             // 記事注入(1件)
             $('#post_title').text(data['post'].title);
             $('#post_date').text(data['post'].date);
-            $('#post_body').text(data['post'].body);
+            $('#post_body').html(data['post'].body);
             // コメント注入(n件)
             $.views.settings.delimiters("{@","@}");
             var result = $("#comments_template").render(data['comments']);
             $("#comments_area").html(result);
+            var button_html = "<form action=\"\" method=\"post\">\n\
+                        <input type=\"button\" value=\"編集\" class=\"btn btn-primary btn-sm\" onclick=\"editSubmit(post_id)\">\n\
+                        <input type=\"button\" value=\"削除\" class=\"btn btn-danger btn-sm\" onclick=\"deleteSubmit(post_id)\">\n\
+                    </form>";
+            if (data['post'].user_id == user_id){
+                $('#control_button_area').html(button_html);
+            }
         });
     });
 </script>
@@ -40,21 +53,17 @@
                 <div class="panel-heading">	
                     <div class="row">
                         <div class="col-md-12">
+                            <!-- タイトル -->
                             <h2 id="post_title"></h2>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-5">
+                            <!-- 投稿日時 -->
                             <small id="post_date"></small>
                         </div>
-                        <div class="col-md-5 col-md-offset-2 text-right">
-                            @if (!Auth::guest())
-                                <?= Form::open() ?>
-                                    <input type="button" value="編集" class="btn btn-primary btn-sm" onclick="editSubmit(post_id)">
-                                    <input type="button" value="削除" class="btn btn-danger btn-sm" onclick="deleteSubmit(post_id)">
-                                <?= Form::close() ?>
-                            @endif
-                        </div>
+                        <!-- ボタン表示部 -->
+                        <div class="col-md-5 col-md-offset-2 text-right" id="control_button_area"></div>
                     </div>
                 </div>
                 <a name="top"></a>

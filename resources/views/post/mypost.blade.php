@@ -1,60 +1,90 @@
-<script type="text/javascript">
-    // 改行コード処理用関数
-//    function nl2br(str) {
-//        return str.replace(/\r?\n/g, "<br />");
-//    }
-    
-    // 記事取得用 URI
-    var url = "/api/blog/posts?user_id={{ Auth::user()->id }}";
-    
-    // 記事データ(JSON)格納用の配列
-    var res = [];
-
-    // 投稿済みの記事一覧を取得
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, false);  // 同期処理(false)
-    xhr.onreadystatechange = function () {
-        // request complete
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                res = JSON.parse(xhr.responseText);
-            } else if (xhr.status === 204) {
-                // No Content 時の処理
-            } else {
-                // Error 時の処理
-            }
-        }
-    }
-    xhr.send();
-</script>
-
 @extends('app')
 
 @section('content')
+
+<!-- 記事表示用テンプレート(jsRender) -->
+<script id="posts_template" type="text/x-jsrender">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>{(:date-)}</h3>
+            <a href="{(getUrlBase/)}/post/view/{(:id)}"><h3>{(:title)}</h3></a>
+            <div>{(:body)}</div>
+            <br>
+            {(if comments.length > 0)}
+                <div style="background-color: #F5F5F5;"><strong>コメント</strong></div>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        {(for comments)}
+                            <strong>{(:name)}</strong><br>
+                            <div>{(:body)}</div><br>
+                            <small>{(:date)}</small><br>
+                            <hr>
+                        {(/for)}
+                    </div>
+                </div>
+            {(/if)}
+            <hr>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    // ベースURL取得
+    var url_base = getBaseURL();
+    // API 用の URL 生成
+    var url = url_base + "/api/blog/posts?user_id={{ Auth::user()->id }}&with_comments=true";
+
+    // 記事データ取得・注入
+    $(function(){
+        $.getJSON(url, null, function(data,status){
+            // 記事注入(n件)
+            $.views.settings.delimiters("{(",")}");
+            $.views.tags("getUrlBase", function(){
+                return url_base;
+            });
+            var result = $("#posts_template").render(data);
+            $("#posts_area").html(result);
+        });
+    });
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 
-                <div class="panel-heading">{{ Auth::user()->name }} の投稿一覧</div>
-                
-
-                <div class="panel-body">
-                    <script type="text/javascript">
-                        var posturl = "";
-                        for (var i in res) {
-                            posturl = "view/" + res[i].id;
-                            document.write("<h3>" + res[i].date + "</h3>");
-                            document.write("<a href=\"" + posturl + "\">");
-                            document.write("<h2>" + res[i].title + "</h2>");
-                            document.write("</a>");
-//                            document.write("<div>" + nl2br(res[i].body) + "</div>");
-                            document.write("<div>" + res[i].body + "</div>");
-                            document.write("<hr>");
-                        }
-                    </script>
-                    <p class="text-center"><a href=\"#top\">ページトップへ戻る</a></p>
+                <!-- ヘッダ -->
+                <div class="panel-heading">
+                    {{ Auth::user()->name }} の投稿一覧
                 </div>
+                
+                <!-- ボディ -->
+                <div class="panel-body">
+                    <div class="row">
+                        <!-- プロフィール -->
+                        <div class="col-md-3">
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <p>ここにプロフィール表示</p>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <p>ダミー</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 投稿記事一覧 -->
+                        <div class="col-md-9">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div id="posts_area"></div>
+                                    <p class="text-center"><a href="#top">ページトップへ戻る</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
