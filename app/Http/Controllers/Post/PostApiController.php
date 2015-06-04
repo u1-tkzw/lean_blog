@@ -25,7 +25,8 @@ class PostApiController extends Controller
         //$this->middleware('auth', ['only' => ['']];
     }
 
-    public function deletePost($id){
+    public function deletePost($id)
+    {
         //$post = Post::findorFail($id);  // TODO: Exception 化
         $post = Post::find($id);
         if (is_null($post)) {
@@ -37,6 +38,7 @@ class PostApiController extends Controller
         $res = Response::make('delete success.', 200);
         return $res;
     }
+
     /**
      * 投稿記事一覧(Posts)取得用の API
      * クエリパラメータで取得件数を指定でき、指定件数分の投稿記事を返す。
@@ -46,13 +48,15 @@ class PostApiController extends Controller
     public function getPosts()
     {
         // クエリパラメータ取得
-        $count   = Input::get('count', 'all');
-        $order   = Input::get('order', 'desc');
-        $user_id = Input::get('user_id', 'all');
+        $count        = Input::get('count', 'all');
+        $order        = Input::get('order', 'desc');
+        $user_id      = Input::get('user_id', 'all');
+        $with_comments = Input::get('with_comments', 'false');
 
         // バリデーション
-        $validator = \Validator::make(['order' => $order], [
-            'order' => 'in:desc,asc'
+        $validator = \Validator::make(['order' => $order, 'with_comments' => $with_comments], [
+            'order'        => 'in:desc,asc',
+            'with_comments' => 'in:true,false'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
@@ -79,13 +83,23 @@ class PostApiController extends Controller
         }
 
         // SQL 実行
-        $res = $query->get();
-        $res->each(function($post) {
+        $posts = $query->get();
+        
+        // 改行コード加工・コメント追加
+        foreach ($posts as $post){
             $post->body = nl2br($post->body);
-            return $post;
-        });
+            
+            if ($with_comments === 'true'){
+                // $post に紐付くコメント抽出・追加
+                $comments = $post->comments;
+                foreach ($comments as $comment){
+                    $comment->body = nl2br($comment->body);
+                }
+                $post['comments'] = $comments;
+            }
+        };
 
-        return Response::json($res, 200, array(), JSON_PRETTY_PRINT);
+        return Response::json($posts, 200, array(), JSON_PRETTY_PRINT);
     }
 
     /**
