@@ -2,8 +2,12 @@
 
 @section('content')
 <script type="text/javascript">
-    $(function(){
-      $('#datetimepicker').datetimepicker({lang: 'ja', step: 10});
+    $(function () {
+        $('#datetimepicker').datetimepicker({
+            format: 'Y-m-d H:i:s',
+            lang: 'ja', 
+            step: 10
+        });
     });
 </script>
 
@@ -34,7 +38,7 @@
                         <div class="form-group">
                             <label for="body">投稿日時(省略可能)</label>
                             <div class='input-group'>
-                                <input type="text" name="date" class="form-control" value="{{ old('date') }}" id="datetimepicker"  placeholder="例) 2015/01/01 12:30">
+                                <input type="text" name="date" class="form-control" value="{{ old('date') }}" id="datetimepicker"  placeholder="例) 2015-01-01 12:30:00">
                             </div>
                         </div>
 

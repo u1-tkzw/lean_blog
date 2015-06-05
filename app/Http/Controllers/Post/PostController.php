@@ -92,17 +92,14 @@ class PostController extends Controller
 
         // 投稿日時が空なら現在日時をセット
         if ($input['date'] === "") {
-            $input['date'] = \Carbon\Carbon::now()->format('Y/m/d H:i:s');
-        } else {
-            // 入力値があれば秒(00)を付加
-            $input['date'] .= ':00';
-        }
+            $input['date'] = \Carbon\Carbon::now();
+        } 
 
         // バリデーション
         $validate = Validator::make($input, [
             'title' => 'required',
             'body'  => 'required',
-            'date'  => 'date_format:Y/m/d H\\:i\\:s',
+            'date'  => 'date_format:Y-m-d H:i:s',
         ]);
 
         // バリデーションで問題ありならエラーを返す
@@ -135,14 +132,14 @@ class PostController extends Controller
 
         // 投稿日時が空なら現在日時をセット
         if ($input['date'] === "") {
-            $input['date'] = \Carbon\Carbon::now();
-        }
+            $input['date'] = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+        } 
         
         // バリデーション
         $validate = Validator::make($input, [
             'title' => 'required',
             'body'  => 'required',
-            'date'  => 'date_format:Y/m/d H:i',
+            'date'  => 'date_format:Y-m-d H:i:s',
         ]);
 
         // バリデーションで問題ありならエラーを返す
@@ -157,7 +154,7 @@ class PostController extends Controller
         // 記事を更新
         $post->title = $input['title'];
         $post->body = $input['body'];
-        $post->date = \Carbon\Carbon::createFromFormat('Y/m/d H:i', $input['date']);
+        $post->date = $input['date'];
         $post->save();
 
         Session::flash('info', "記事を更新しました。");
