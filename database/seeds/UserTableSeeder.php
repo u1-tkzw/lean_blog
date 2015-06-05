@@ -20,6 +20,11 @@ class UserTableSeeder extends Seeder
             'email'    => 'test2@h2system.jp',
             'password' => Hash::make('h2system'),
         ]);
-    }
+        User::create([
+            'name'     => '山田さん',
+            'email'    => 'yamada@h2system.jp',
+            'password' => Hash::make('h2system'),
+        ]);
+        }
 
 }

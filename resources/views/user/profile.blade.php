@@ -1,6 +1,19 @@
 @extends('app')
 
 @section('content')
+<script>
+    var inputFile = document.getElementById('file');
+
+    function fileChange(ev) {
+        var target = ev.target;
+        var files = target.files;
+
+        console.log(files);
+    }
+
+    inputFile.addEventListener('change', fileChange, false);
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -15,11 +28,11 @@
                         <input type='hidden' name="user_id" class="form-control" value="{{ Auth::user()->id }}">
                         <!-- プロフ画像 -->
                         <div class="media">
-                            {!! Html::image('images/profile/default_icon.png', 'プロフィール画像',['class' => 'media-object img-rounded　img-polaroid']) !!}
+                            <img src="{{ url('images/profile/default_icon.png') }}" class="img-thumbnail">
                         </div>
                         <div class="form-group">
                             <label for="image">プロフィール画像</label>
-                            {!! Form::file('image') !!}
+                            <input type="file" id="file"><br>
                         </div>
                         <!-- 名前 -->
                         <div class="form-group">

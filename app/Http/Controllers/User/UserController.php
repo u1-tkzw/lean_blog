@@ -4,9 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\User;
-use Redirect;
-use Input;
-use Validator;
+use App\Profile;
 
 class UserController extends Controller
 {
@@ -19,7 +17,27 @@ class UserController extends Controller
     public function __construct()
     {
         // オプションで auth 対象を指定: 全画面
-        $this->middleware('auth');
+        //$this->middleware('auth');
+    }
+
+    /**
+     * ユーザ一覧を表示
+     *
+     * @return view
+     */
+    public function userCheck($value)
+    {
+        $user = User::where('id', $value)->first();
+        if (is_null($user)) {
+            return view('errors.notFoundUser');
+        }
+
+        $profile = $user->profile;
+        if (is_null($profile)) {
+            $profile = getDummyUserObject($user);
+        }
+
+        return view('user/home', ['user' => $user, 'profile' => $profile]);
     }
 
     /**
@@ -41,4 +59,5 @@ class UserController extends Controller
     {
         return view('user/config');
     }
+
 }

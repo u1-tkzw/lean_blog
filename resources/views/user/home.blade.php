@@ -28,32 +28,39 @@
     </div>
 </script>
 
-<input type="hidden" id="userId" name="userId" value="{{ $user_id }}" />
+<input type="hidden" id="userId" name="userId" value="{{ $user->id }}" />
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 
                 <!-- ヘッダ -->
-                <div class="panel-heading">
-                    {{ Auth::user()->name }} の投稿一覧
+                <div class="panel-heading text-center">
+                    <h2>{{ $profile->blog_title }}</h2>
                 </div>
                 
                 <!-- ボディ -->
                 <div class="panel-body">
                     <div class="row">
+                        
                         <!-- プロフィール -->
                         <div class="col-md-3">
-                            <div class="panel panel-info">
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center">
+                                    <strong>{{ $user->name }}</strong>
+                                </div>
                                 <div class="panel-body">
-                                    <p>ここにプロフィール表示</p>
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <p>ダミー</p>
+                                    <!-- プロフ画像 -->
+                                    <div class="media">
+                                        <img src="{{ asset($profile->image) }}" class="img-thumbnail img-responsive center-block">
+                                    </div>
+                                    <p>性別: {{ $profile->sex }}</p>
+                                    <p>生年月日: {{ $profile->birthday }}</p>
+                                    <p>{!! nl2br(e($profile->comment)) !!}</p>
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- 投稿記事一覧 -->
                         <div class="col-md-9">
                             <div class="panel panel-default">
@@ -73,5 +80,5 @@
 @endsection
 
 @section('script')
-    <?= scripts('js/lib-mypost.js'); ?>
+    <?= scripts('js/lib-home.js'); ?>
 @endsection

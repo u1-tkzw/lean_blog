@@ -28,6 +28,12 @@ class PostTableSeeder extends Seeder
             'body'    => "これはサンプル記事3です。",
             'date'    => '2015-12-01 12:00:00',
         ]);
-    }
+        Post::create([
+            'user_id' => 3,
+            'title'   => '山田さんの記事04',
+            'body'    => "これは山田さんが書いた記事だよ。",
+            'date'    => '2015-05-01 12:00:00',
+        ]);
+        }
 
 }

@@ -17,3 +17,21 @@ function scripts($scripts)
     }
     return implode('', $result);
 }
+
+/**
+ * ユーザ情報未登録時用のダミーデータを生成
+ * 
+ * @param type $user
+ * @return object
+ */
+function getDummyUserObject($user)
+{
+    $dummy               = [];
+    $dummy['blog_title'] = $user->name . 'のブログ';
+    $dummy['comment']    = '未登録';
+    $dummy['sex']        = '未登録';
+    $dummy['birthday']   = '未登録';
+    $dummy['image']      = 'images/default/default_icon.png';
+    
+    return (object)$dummy;
+}

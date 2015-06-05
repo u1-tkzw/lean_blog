@@ -16,9 +16,11 @@ class CreateProfilesTable extends Migration {
 		{
 			$table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->string('blog_title');
             $table->text('comment');
             $table->string('sex');
             $table->timestamp('birthday');
+            $table->string('image');
 			$table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 		});
