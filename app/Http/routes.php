@@ -14,11 +14,12 @@
 //Route::get('/{user}', 'RootController@index');
 Route::get('/', 'WelcomeController@index');
 
-Route::get('home', 'HomeController@index');
+//Route::get('home', 'HomeController@index');
 
 Route::get('user/{user_name}', 'User\UserController@userCheck');
 
 Route::controllers([
+    'home'         => 'User\UserController',
     'auth'         => 'Auth\AuthController',
     'password'     => 'Auth\PasswordController',
     'post'         => 'Post\PostController',

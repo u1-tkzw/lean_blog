@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Profile;
 
 class UserController extends Controller
 {
@@ -22,6 +22,30 @@ class UserController extends Controller
 
     /**
      * ユーザ一覧を表示
+     *
+     * @return view
+     */
+    public function getHome()
+    {
+        dd('aaa');
+        // ログインしていなければ投稿一覧へ
+        if (Auth::check()) {
+            $user_id = Auth::id();
+        } else {
+            return redirect('/post');
+        }
+        
+        $user = User::where('id', $user_id)->first();
+        $profile = $user->profile;
+        if (is_null($profile)) {
+            $profile = getDummyUserObject($user);
+        }
+
+        return view('user/home', ['user' => $user, 'profile' => $profile]);
+    }
+    
+    /**
+     * ユーザの記事一覧を表示
      *
      * @return view
      */
