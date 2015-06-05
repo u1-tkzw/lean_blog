@@ -3,55 +3,21 @@
 @section('content')
 <!-- コメント表示用テンプレート(jsRender) -->
 <script id="comments_template" type="text/x-jsrender">
-    <strong>{@:name@}</strong><br>
-    <div>{@:body@}</div><br>
-    <small>{@:date@}</small><br>
+    <strong>{(:name)}</strong><br>
+    <div>{(:body)}</div><br>
+    <small>{(:date)}</small><br>
     <hr>
 </script>
 
-<!-- コメント表示用テンプレート(jsRender) -->
+<!-- 編集・削除ボタン表示用テンプレート(jsRender) -->
 <script id="form_template" type="text/x-jsrender">
     <?= Form::open() ?>
-        <input type="hidden" id="postId" name="postId" value="{@:post_id@}" />
+        <input type="hidden" id="postId" name="postId" value="{(:post_id)}" />
         <input type="button" id="editBtn" value="編集" class="btn btn-primary btn-sm"  />
         <input type="button" id="deleteBtn" value="削除" class="btn btn-danger btn-sm"  />
     <?= Form::close() ?>
 </script>
 
-
-<script type="text/javascript">
-    // 記事ID 取得
-    var post_id = getPostID();
-    // ベースURL取得
-    var url_base = getBaseURL();
-    // API 用の URL 生成
-    var url = url_base + '/api/blog/post/' + post_id;
-
-    // 記事データ取得・注入
-    $(function(){
-        var user_id = $('#userId').val();
-        $.getJSON(url, null, function(data,status){
-            // 記事注入(1件)
-            $('#post_title').text(data['post'].title);
-            $('#post_date').text(data['post'].date);
-            $('#post_body').html(data['post'].body);
-            // コメント注入(n件)
-            $.views.settings.delimiters("{@","@}");
-            var result = $("#comments_template").render(data['comments']);
-            $("#comments_area").html(result);
-            var button_html = $("#form_template").render({"post_id": post_id});
-            if (data['post'].user_id == user_id){
-                $('#control_button_area').html(button_html);
-            }
-        });
-        $(document).on('click', '#deleteBtn', function() {
-            deleteSubmit(post_id);
-        });;
-        $(document).on('click', '#editBtn', function() {
-            editSubmit(post_id);
-        });;
-    });
-</script>
 <input type="hidden" id="userId" name="userId" value="{{ $user_id }}" />
 <div class="container">
     <div class="row">
@@ -126,5 +92,6 @@
 </div>
 @endsection
 
-@section('scripts')
-@stop
+@section('script')
+    <?= scripts('js/lib-view.js'); ?>
+@endsection

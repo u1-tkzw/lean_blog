@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Post;
 use App\Comment;
-use Response;
-use Request;
 use Redirect;
 use Session;
 use Input;
@@ -42,11 +41,10 @@ class PostController extends Controller
      */
     public function getView($post_id)
     {
-        // ★バリデーション
         Post::findOrFail($post_id);
         $userId = 'dummy';
-        if (\Auth::check()) {
-            $userId = \Auth::id();
+        if (Auth::check()) {
+            $userId = Auth::id();
         }
          return view('post/view', ['post_id' => $post_id, 'user_id' => $userId]);
     }
@@ -57,7 +55,11 @@ class PostController extends Controller
      */
     public function getMypost()
     {
-        return view('post/mypost');
+        $userId = 'dummy';
+        if (Auth::check()) {
+            $userId = Auth::id();
+        }
+        return view('post/mypost', ['user_id' => $userId]);
     }
 
     /**
