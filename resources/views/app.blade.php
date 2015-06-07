@@ -51,8 +51,8 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/') }}">Home</a></li>
-                    <li><a href="{{ url('/post') }}">Blog</a></li>
+                    <li><a href="{{ url('/user') }}">ホーム</a></li>
+                    <li><a href="{{ url('/post') }}">投稿一覧</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -60,15 +60,15 @@
                         <li><a href="{{ url('/auth/login') }}">ログイン</a></li>
                         <li><a href="{{ url('/auth/register') }}">ユーザ登録</a></li>
                     @else
-                        <li><a href="{{ url('/post/mypost') }}">投稿済み一覧</a></li>
+                        <!-- <li><a href="{{ url('/post/mypost') }}">投稿済み一覧</a></li> -->
                         <li><a href="{{ url('/post/create') }}">記事を書く</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ Auth::user()->name }} <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/post/create') }}"><span class="glyphicon glyphicon-pencil"></span> 記事を書く</a></li>
-                                <li><a href="{{ url('/post/mypost') }}"><span class="glyphicon glyphicon-file"></span> 投稿済み一覧</a></li>
+                                <!-- <li><a href="{{ url('/post/mypost') }}"><span class="glyphicon glyphicon-file"></span> 投稿済み一覧</a></li> -->
                                 <li><a href="{{ url('/user/config') }}"><span class="glyphicon glyphicon-cog"></span> ブログ設定</a></li>
-                                <li><a href="{{ url('/user/profile') }}"><span class="glyphicon glyphicon-user"></span> ユーザ設定</a></li>
+                                <li><a href="{{ url('/user/profile/' . Auth::user()->id) }}"><span class="glyphicon glyphicon-user"></span> ユーザ設定</a></li>
                                 <li><a href="{{ url('/auth/logout') }}"><span class="glyphicon glyphicon-off"></span> ログアウト</a></li>
                             </ul>
                         </li>

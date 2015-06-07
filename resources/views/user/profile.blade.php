@@ -1,18 +1,6 @@
 @extends('app')
 
 @section('content')
-<script>
-    var inputFile = document.getElementById('file');
-
-    function fileChange(ev) {
-        var target = ev.target;
-        var files = target.files;
-
-        console.log(files);
-    }
-
-    inputFile.addEventListener('change', fileChange, false);
-</script>
 
 <div class="container">
     <div class="row">
@@ -28,7 +16,7 @@
                         <input type='hidden' name="user_id" class="form-control" value="{{ Auth::user()->id }}">
                         <!-- プロフ画像 -->
                         <div class="media">
-                            <img src="{{ url('images/profile/default_icon.png') }}" class="img-thumbnail">
+                            <img src="{{ asset('images/default/default_icon.png') }}" width="160" height="160" class="img-thumbnail" id="thumb">
                         </div>
                         <div class="form-group">
                             <label for="image">プロフィール画像</label>
@@ -66,4 +54,23 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function(){
+        $('input[type=file]').change(function(){
+            var file = $(this).prop('files')[0];
+            if (! file.type.match('image/*')) {
+                alert('画像ファイルを選択してください。');
+                return;
+            }
+            var fileReader = new FileReader();
+            fileReader.onload = function(){
+                $('#thumb').attr('src', fileReader.result);
+                console.log(file.type);
+                console.log(file.name);
+            };
+            fileReader.readAsDataURL(file);
+        });
+    });
+
+</script>
 @endsection

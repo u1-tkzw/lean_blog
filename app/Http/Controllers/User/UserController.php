@@ -20,28 +20,22 @@ class UserController extends Controller
         //$this->middleware('auth');
     }
 
+    
     /**
      * ユーザ一覧を表示
      *
      * @return view
      */
-    public function getHome()
+    public function getIndex()
     {
-        dd('aaa');
         // ログインしていなければ投稿一覧へ
         if (Auth::check()) {
             $user_id = Auth::id();
         } else {
             return redirect('/post');
         }
-        
-        $user = User::where('id', $user_id)->first();
-        $profile = $user->profile;
-        if (is_null($profile)) {
-            $profile = getDummyUserObject($user);
-        }
 
-        return view('user/home', ['user' => $user, 'profile' => $profile]);
+        return \Redirect::to("user/home/$user_id");
     }
     
     /**
@@ -49,9 +43,9 @@ class UserController extends Controller
      *
      * @return view
      */
-    public function userCheck($value)
+    public function getHome($user_id)
     {
-        $user = User::where('id', $value)->first();
+        $user = User::where('id', $user_id)->first();
         if (is_null($user)) {
             return view('errors.notFoundUser');
         }
@@ -69,9 +63,19 @@ class UserController extends Controller
      *
      * @return view
      */
-    public function getProfile()
+    public function getProfile($user_id)
     {
-        return view('user/profile');
+        $user = User::where('id', $user_id)->first();
+        if (is_null($user)) {
+            return view('errors.notFoundUser');
+        }
+
+        $profile = $user->profile;
+        if (is_null($profile)) {
+            $profile = getDummyUserObject($user);
+        }
+        
+        return view('user/profile', ['user' => $user, 'profile' => $profile]);
     }
 
     /**
@@ -81,6 +85,7 @@ class UserController extends Controller
      */
     public function getConfig()
     {
+        dd("config");
         return view('user/config');
     }
 
